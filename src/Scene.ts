@@ -98,7 +98,9 @@ export class Scene {
         this.projectName = sceneConfig.getTargetProjectName();
         this.realProjectDir = fs.realpathSync(sceneConfig.getTargetProjectDirectory());
         this.projectFiles = sceneConfig.getProjectFiles();
-
+        this.projectFiles.forEach((file) => {
+        console.log("[arkanalyzer-debug] projectFiles = "+file);
+        })
         const buildProfile = path.join(this.realProjectDir, './build-profile.json5');
         if (fs.existsSync(buildProfile)) {
             let configurationsText: string;
@@ -115,6 +117,10 @@ export class Scene {
                     this.modulePath2NameMap.set(path.resolve(this.realProjectDir, path.join(module.srcPath)), module.name);
                 });
             }
+            console.log(
+                "[arkanalyzer-debug] modulePath2NameMap =",
+                Array.from(this.modulePath2NameMap.entries())
+                );
         } else {
             logger.warn('There is no build-profile.json5 for this project.');
         }
@@ -124,12 +130,15 @@ export class Scene {
             this.ohPkgFilePath = OhPkgFilePath;
             this.ohPkgContent = fetchDependenciesFromFile(this.ohPkgFilePath);
             this.ohPkgContentMap.set(OhPkgFilePath, this.ohPkgContent);
+            console.log("[arkanalyzer-debug] ohPkgFilePath = ", this.ohPkgFilePath);
+            console.log("[arkanalyzer-debug] ohPkgContent = ", this.ohPkgContent);
         } else {
             logger.warn('This project has no oh-package.json5!');
         }
 
         // handle sdks
         sceneConfig.getSdksObj()?.forEach((sdk) => {
+            console.log("[arkanalyzer-debug] handle sdk = ", sdk);
             if (!sdk.moduleName) {
                 this.buildSdk(sdk.name, sdk.path);
                 this.projectSdkMap.set(sdk.name, sdk);

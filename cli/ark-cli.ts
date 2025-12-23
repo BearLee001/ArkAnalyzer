@@ -6,6 +6,10 @@ import process from 'process';
 import {
   Scene,
   SceneConfig,
-  DotFilePrinter,
 } from '../src';
 
+const config = new SceneConfig();
+config.buildFromProjectDir("/Users/bytedance/DemoMainIndex");
+const scene = new Scene();
+scene.buildSceneFromProjectDir(config);
+console.log("hello");
