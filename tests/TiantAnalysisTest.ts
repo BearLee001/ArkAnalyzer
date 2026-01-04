@@ -18,9 +18,9 @@ import { Scene } from '../src/Scene';
 import { ModelUtils } from '../src/core/common/ModelUtils';
 import { TiantAnalysisChecker, TiantAnalysisSolver } from '../src/core/dataflow/TiantAnalysis';
 
-const config_path = "tests\\resources\\ifds\\TiantAnalysis\\ifdsTestConfig.json";
+const config_path = "tests/resources/ifds/TiantAnalysis";
 let config: SceneConfig = new SceneConfig();
-config.buildFromJson2(config_path);
+config.buildFromProjectDir(config_path);
 const scene = new Scene(config);
 scene.inferTypes()
 const defaultMethod = scene.getFiles()[0].getDefaultClass().getDefaultArkMethod();
@@ -28,7 +28,7 @@ let method = ModelUtils.getMethodWithName("T1",defaultMethod!);
 let source = ModelUtils.getMethodWithName("source",defaultMethod!);
 let sink = ModelUtils.getMethodWithName("sink",defaultMethod!);
 if(method){
-    const problem = new TiantAnalysisChecker([...method.getCfg().getBlocks()][0].getStmts()[method.getParameters().length],method);
+    const problem = new TiantAnalysisChecker([...method.getCfg()!.getBlocks()][0].getStmts()[method.getParameters().length],method);
     problem.setSinks([sink!]);
     problem.setSources([source!]);
     const solver = new TiantAnalysisSolver(problem, scene);
