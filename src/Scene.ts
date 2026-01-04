@@ -81,7 +81,13 @@ export class Scene {
 
     private buildStage: SceneBuildStage = SceneBuildStage.BUILD_INIT;
 
-    constructor() {
+    constructor();
+    constructor(config: SceneConfig);
+
+    constructor(config?: SceneConfig) {
+        if (config != null) {
+            this.buildSceneFromProjectDir(config)
+        }
     }
 
     public getStage(): SceneBuildStage {

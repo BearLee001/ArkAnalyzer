@@ -91,11 +91,11 @@ export class UndefinedVariableChecker extends DataflowProblem<Value> {
                     }
                     return ret;
                 }
-                if (!factEqual(srcStmt.getDef(), dataFact)) {
-                    if (!(dataFact instanceof Local && dataFact.getName() == srcStmt.getDef()!.toString()))
-                        ret.add(dataFact);
-                }
                 if (srcStmt instanceof ArkAssignStmt ) {
+                    if (!factEqual(srcStmt.getDef(), dataFact)) {
+                        if (!(dataFact instanceof Local && dataFact.getName() == srcStmt.getDef()!.toString()))
+                            ret.add(dataFact);
+                    }
                     let ass: ArkAssignStmt = (srcStmt as ArkAssignStmt);
                     let assigned: Value = ass.getLeftOp();
                     let rightOp: Value = ass.getRightOp();
@@ -117,7 +117,6 @@ export class UndefinedVariableChecker extends DataflowProblem<Value> {
                         ret.add(field);
                     }
                 }
-
                 return ret;
             }
         }
